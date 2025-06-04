@@ -1,0 +1,29 @@
+{% extends "ai_blog/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="test-content">
+    <h2>{{ title }}</h2>
+
+    <div class="methodologies-section">
+        <h3>Популярные методологии тестирования</h3>
+        <ul>
+            {% for method in methodologies %}
+            <li>{{ method }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="articles-section">
+        <h3>Лучшие практики тестирования</h3>
+        {% for article in articles %}
+        <article class="article-card">
+            <h4>{{ article.title }}</h4>
+            <p>{{ article.summary }}</p>
+            <span class="author">Автор: {{ article.author }}</span>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

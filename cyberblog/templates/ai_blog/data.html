@@ -1,0 +1,29 @@
+{% extends "ai_blog/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="data-content">
+    <h2>{{ title }}</h2>
+
+    <div class="trends-section">
+        <h3>Текущие тренды в данных для ИИ</h3>
+        <ul>
+            {% for trend in trends %}
+            <li>{{ trend }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="articles-section">
+        <h3>Рекомендуемые статьи</h3>
+        {% for article in articles %}
+        <article class="article-card">
+            <h4>{{ article.title }}</h4>
+            <p>{{ article.summary }}</p>
+            <span class="author">Автор: {{ article.author }}</span>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

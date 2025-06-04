@@ -1,0 +1,20 @@
+{% extends "ai_blog/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="home-content">
+    <h2>Добро пожаловать в CyberBlog AI</h2>
+    <p>Ваш главный источник новостей и аналитики об искусственном интеллекте</p>
+
+    <div class="featured-articles">
+        <h3>Рекомендуемые статьи</h3>
+        {% for article in featured_articles %}
+        <article class="article-card">
+            <h4><a href="{% url 'ai_blog:'|add:article.url %}">{{ article.title }}</a></h4>
+            <p>{{ article.summary }}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
