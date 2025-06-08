@@ -1,0 +1,38 @@
+[
+    {
+        "model": "ai_blog.category",
+        "pk": 1,
+        "fields": {
+            "name": "Искусственный интеллект",
+            "slug": "artificial-intelligence",
+            "description": "Статьи о технологиях искусственного интеллекта и машинного обучения"
+        }
+    },
+    {
+        "model": "ai_blog.category",
+        "pk": 2,
+        "fields": {
+            "name": "Данные",
+            "slug": "data",
+            "description": "Статьи о работе с данными, их сборе и обработке"
+        }
+    },
+    {
+        "model": "ai_blog.category",
+        "pk": 3,
+        "fields": {
+            "name": "Тестирование",
+            "slug": "testing",
+            "description": "Статьи о тестировании ИИ-систем и моделей"
+        }
+    },
+    {
+        "model": "ai_blog.category",
+        "pk": 4,
+        "fields": {
+            "name": "Промпты",
+            "slug": "prompts",
+            "description": "Статьи о работе с промптами и языковыми моделями"
+        }
+    }
+] 

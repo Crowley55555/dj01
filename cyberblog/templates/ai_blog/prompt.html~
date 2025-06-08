@@ -1,0 +1,73 @@
+{% extends "ai_blog/base.html" %}
+
+{% block title %}Промпт-инжиниринг | CyberBlog AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <h1 class="mb-4">Искусство общения с ИИ</h1>
+
+        <div class="card bg-dark border-light mb-4">
+            <img src="{% static 'ai_blog/images/prompt-engineering.jpg' %}" class="card-img-top" alt="Промпт-инжиниринг">
+            <div class="card-body">
+                <h2>Что такое промпт-инжиниринг?</h2>
+                <p>Промпт-инжиниринг - это навык правильного формулирования запросов к ИИ, чтобы получать точные и полезные ответы. Это как программирование, но на естественном языке.</p>
+
+                <h3 class="mt-4">Основные принципы:</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card bg-secondary border-light mb-3">
+                            <div class="card-body">
+                                <h5>Будьте конкретны</h5>
+                                <p>Вместо "Напиши текст" скажите "Напиши SEO-статью на 1000 слов про преимущества Python для анализа данных"</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-secondary border-light mb-3">
+                            <div class="card-body">
+                                <h5>Задавайте контекст</h5>
+                                <p>"Ты эксперт по цифровому маркетингу. Напиши пост для LinkedIn о..."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card bg-dark border-light mb-4">
+            <div class="card-body">
+                <h4>Примеры промптов</h4>
+                <div class="accordion" id="promptExamples">
+                    <div class="accordion-item bg-dark border-light">
+                        <h5 class="accordion-header">
+                            <button class="accordion-button bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#prompt1">
+                                Для ChatGPT
+                            </button>
+                        </h5>
+                        <div id="prompt1" class="accordion-collapse collapse show" data-bs-parent="#promptExamples">
+                            <div class="accordion-body">
+                                <code>"Анализируй как эксперт по Python с 10-летним опытом. Объясни разницу между списками и кортежами простым языком для новичков, приведи 3 примера использования каждого."</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-dark border-light">
+                        <h5 class="accordion-header">
+                            <button class="accordion-button bg-dark text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#prompt2">
+                                Для Midjourney
+                            </button>
+                        </h5>
+                        <div id="prompt2" class="accordion-collapse collapse" data-bs-parent="#promptExamples">
+                            <div class="accordion-body">
+                                <code>"Киберпанк город будущего ночью, неоновые огни, дождь, высокие здания, в стиле аниме, 4k, детализированно"</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

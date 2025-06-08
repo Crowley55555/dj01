@@ -1,0 +1,28 @@
+{% extends 'ai_blog/base.html' %}
+
+{% block title %}{{ article.title }} - AI Blog{% endblock %}
+
+{% block content %}
+<article class="card">
+    <div class="card-body">
+        <h1 class="card-title mb-4">{{ article.title }}</h1>
+        <div class="text-muted mb-4">
+            <p>
+                Автор: {{ article.author }} | 
+                Категория: {{ article.category.name }} | 
+                Опубликовано: {{ article.created_at|date:"d.m.Y" }}
+            </p>
+        </div>
+        {% if article.image %}
+            <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid mb-4">
+        {% endif %}
+        <div class="article-content">
+            {{ article.content|safe }}
+        </div>
+    </div>
+</article>
+
+<div class="mt-4">
+    <a href="{% url 'ai_blog:article_list' %}" class="btn btn-secondary">← Назад к списку статей</a>
+</div>
+{% endblock %} 

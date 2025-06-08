@@ -1,0 +1,75 @@
+/* Основные стили */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Стили для карточек статей */
+.card {
+    transition: transform 0.2s;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    color: #333;
+}
+
+.card-title a {
+    color: inherit;
+}
+
+.card-title a:hover {
+    color: #007bff;
+}
+
+/* Стили для навигации */
+.navbar {
+    margin-bottom: 2rem;
+}
+
+.nav-link {
+    font-weight: 500;
+}
+
+/* Стили для футера */
+.footer {
+    margin-top: 2rem;
+    padding: 1rem 0;
+    background-color: #f8f9fa;
+}
+
+/* Стили для контента статей */
+.article-content {
+    line-height: 1.6;
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+}
+
+/* Стили для категорий */
+.list-unstyled li {
+    margin-bottom: 0.5rem;
+}
+
+.list-unstyled a {
+    color: #666;
+    transition: color 0.2s;
+}
+
+.list-unstyled a:hover {
+    color: #007bff;
+    text-decoration: none;
+} 

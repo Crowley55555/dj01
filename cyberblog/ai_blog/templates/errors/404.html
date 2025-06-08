@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Страница не найдена{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/error.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <h1>404 - Страница не найдена</h1>
+    <p>Извините, запрашиваемая страница не существует.</p>
+    <p>{{ exception }}</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">Вернуться на главную</a>
+</div>
+{% endblock %} 

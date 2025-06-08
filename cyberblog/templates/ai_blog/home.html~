@@ -1,5 +1,5 @@
 {% extends "ai_blog/base.html" %}
-{% load static %}
+
 {% block title %}Главная - CyberBlog AI{% endblock %}
 
 {% block content %}

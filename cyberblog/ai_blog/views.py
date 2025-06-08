@@ -1,104 +1,54 @@
-"""
-Views for the AI Blog application.
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView
+from django.core.cache import cache
+from .models import Article, Category
 
-Contains view functions for rendering data and test pages.
-"""
-from django.shortcuts import render
+class HomeView(ListView):
+    model = Article
+    template_name = 'ai_blog/home.html'
+    context_object_name = 'articles'
+    paginate_by = 5
 
+    def get_queryset(self):
+        return Article.objects.filter(is_published=True).select_related('category').order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+class ArticleListView(ListView):
+    model = Article
+    template_name = 'ai_blog/article_list.html'
+    context_object_name = 'articles'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = Article.objects.filter(is_published=True).select_related('category')
+        category_slug = self.request.GET.get('category')
+        if category_slug:
+            queryset = queryset.filter(category__slug=category_slug)
+        return queryset.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'ai_blog/article_detail.html'
+    context_object_name = 'article'
+    slug_url_kwarg = 'slug'
+
+    def get_queryset(self):
+        return Article.objects.filter(is_published=True).select_related('category')
 
 def data_page(request):
-    """
-    Renders the data page with AI-related content about data science.
+    return render(request, 'ai_blog/data.html')
 
-    Args:
-        request: HttpRequest object
-
-    Returns:
-        HttpResponse with rendered data.html template
-    """
-    context = {
-        'title': 'Data Science in AI',
-        'articles': [
-            {
-                'title': 'The Future of Big Data in AI',
-                'summary': 'How massive datasets are shaping the next generation of AI models.',
-                'author': 'Dr. Data'
-            },
-            {
-                'title': 'Data Labeling Techniques',
-                'summary': 'Comparative analysis of manual vs automated data labeling approaches.',
-                'author': 'Label Master'
-            },
-            {
-                'title': 'Data Privacy in ML',
-                'summary': 'Ensuring privacy while training models on sensitive data.',
-                'author': 'Privacy Guardian'
-            }
-        ],
-        'trends': [
-            'Synthetic data generation',
-            'Federated learning',
-            'Data-centric AI'
-        ]
-    }
-    return render(request, 'ai_blog/data.html', context)
-
+def prompt_page(request):
+    return render(request, 'ai_blog/prompt.html')
 
 def test_page(request):
-    """
-    Renders the test page with AI testing and evaluation content.
-
-    Args:
-        request: HttpRequest object
-
-    Returns:
-        HttpResponse with rendered test.html template
-    """
-    context = {
-        'title': 'AI Testing Methodologies',
-        'articles': [
-            {
-                'title': 'Benchmarking AI Models',
-                'summary': 'Comprehensive guide to evaluating model performance across different metrics.',
-                'author': 'Benchmark Pro'
-            },
-            {
-                'title': 'Adversarial Testing',
-                'summary': 'How to test your models against adversarial attacks and edge cases.',
-                'author': 'Security Expert'
-            },
-            {
-                'title': 'A/B Testing for AI Products',
-                'summary': 'Practical approaches to A/B testing for AI-powered features.',
-                'author': 'Product Scientist'
-            }
-        ],
-        'methodologies': [
-            'Unit testing for ML',
-            'Integration testing',
-            'Performance benchmarking',
-            'Bias and fairness evaluation'
-        ]
-    }
-    return render(request, 'ai_blog/test.html', context)
-
-def home_page(request):
-    """
-    Renders the home page of the AI blog.
-    """
-    context = {
-        'title': 'CyberBlog AI - Home',
-        'featured_articles': [
-            {
-                'title': 'Introduction to Artificial Intelligence',
-                'summary': 'Learn the basics of AI and its applications in modern technology.',
-                'url': 'data'
-            },
-            {
-                'title': 'Testing AI Systems',
-                'summary': 'Discover best practices for testing and validating AI models.',
-                'url': 'test'
-            }
-        ]
-    }
-    return render(request, 'ai_blog/home.html', context)
+    return render(request, 'ai_blog/test.html')

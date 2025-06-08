@@ -1,0 +1,51 @@
+{% extends 'ai_blog/base.html' %}
+
+{% block title %}Статьи - AI Blog{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1 class="mb-4">Статьи</h1>
+        {% if articles %}
+            {% for article in articles %}
+                <article class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <a href="{% url 'ai_blog:article_detail' article.slug %}" class="text-decoration-none">
+                                {{ article.title }}
+                            </a>
+                        </h2>
+                        <p class="card-text text-muted">
+                            Автор: {{ article.author }} | 
+                            Категория: {{ article.category.name }} | 
+                            {{ article.created_at|date:"d.m.Y" }}
+                        </p>
+                        <p class="card-text">{{ article.summary }}</p>
+                        <a href="{% url 'ai_blog:article_detail' article.slug %}" class="btn btn-primary">Читать далее</a>
+                    </div>
+                </article>
+            {% endfor %}
+        {% else %}
+            <p>Статьи не найдены.</p>
+        {% endif %}
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Категории</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for category in categories %}
+                        <li class="mb-2">
+                            <a href="{% url 'ai_blog:article_list' %}?category={{ category.slug }}" class="text-decoration-none">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

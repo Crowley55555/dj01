@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ошибка сервера{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/error.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <h1>500 - Ошибка сервера</h1>
+    <p>Извините, произошла внутренняя ошибка сервера.</p>
+    <p>Наши специалисты уже работают над решением проблемы.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">Вернуться на главную</a>
+</div>
+{% endblock %} 
