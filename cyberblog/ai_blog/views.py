@@ -1,21 +1,24 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils import timezone
+from django.urls import reverse_lazy
+from django.contrib import messages
 import json
 from .models import Article, Category
+from .forms import ArticleForm
 
 class HomeView(ListView):
     model = Article
     template_name = 'ai_blog/home.html'
     context_object_name = 'articles'
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
-        return Article.objects.filter(is_published=True).select_related('category').order_by('-created_at')
+        return Article.objects.filter(is_published=True).select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -48,6 +51,26 @@ class ArticleDetailView(DetailView):
 
     def get_queryset(self):
         return Article.objects.filter(is_published=True).select_related('category')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+class ArticleCreateView(CreateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = 'ai_blog/article_form.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Статья успешно создана!')
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 def data_page(request):
     return render(request, 'ai_blog/data.html')
