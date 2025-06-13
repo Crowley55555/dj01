@@ -1,6 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.core.cache import cache
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.utils import timezone
+import json
 from .models import Article, Category
 
 class HomeView(ListView):
@@ -52,3 +57,19 @@ def prompt_page(request):
 
 def test_page(request):
     return render(request, 'ai_blog/test.html')
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def analytics(request):
+    try:
+        page = request.POST.get('page', '')
+        time = request.POST.get('time', '')
+        
+        # Здесь можно добавить логику сохранения аналитики
+        # Например, в базу данных или файл логов
+        print(f"Analytics: Page={page}, Time={time}")
+        
+        return HttpResponse(status=200)
+    except Exception as e:
+        print(f"Analytics error: {str(e)}")
+        return HttpResponse(status=500)

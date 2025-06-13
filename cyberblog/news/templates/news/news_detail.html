@@ -1,0 +1,39 @@
+{% extends 'ai_blog/base.html' %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'news:news_list' %}">Новости</a></li>
+            <li class="breadcrumb-item active">{{ news.title }}</li>
+        </ol>
+    </nav>
+
+    <article class="news-detail">
+        <h1 class="mb-4">{{ news.title }}</h1>
+        
+        <div class="news-meta text-muted mb-4">
+            <small>
+                Источник: {{ news.source }} | 
+                Опубликовано: {{ news.created_at|date:"d.m.Y H:i" }}
+            </small>
+        </div>
+
+        {% if news.image %}
+        <div class="news-image mb-4">
+            <img src="{{ news.image.url }}" class="img-fluid rounded" alt="{{ news.title }}">
+        </div>
+        {% endif %}
+
+        <div class="news-content">
+            {{ news.content|linebreaks }}
+        </div>
+    </article>
+
+    <div class="mt-4">
+        <a href="{% url 'news:news_list' %}" class="btn btn-secondary">← Назад к списку новостей</a>
+    </div>
+</div>
+{% endblock %} 

@@ -3,6 +3,7 @@
         <a class="navbar-brand" href="{% url 'ai_blog:home' %}">
             <i class="bi bi-robot"></i> CyberBlog AI
         </a>
+        <div id="clock" class="clock d-none d-lg-block"></div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,6 +11,9 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'ai_blog:home' %}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news:news_list' %}">Новости</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'ai_blog:data' %}">Данные</a>

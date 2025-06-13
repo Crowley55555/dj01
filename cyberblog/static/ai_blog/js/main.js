@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
         data.append('page', page);
         data.append('time', new Date().toISOString());
 
-        navigator.sendBeacon('/analytics', data);
+        // Используем абсолютный путь
+        const analyticsUrl = window.location.origin + '/analytics/';
+        navigator.sendBeacon(analyticsUrl, data);
     }
 });

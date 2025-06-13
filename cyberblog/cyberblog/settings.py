@@ -28,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Отключаем автоматическое добавление слеша в конце URL
+APPEND_SLASH = False
+
 
 # Application definition
 
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ai_blog.apps.AiBlogConfig',  # Наше приложение
+    'news.apps.NewsConfig'
 ]
 
 MIDDLEWARE = [

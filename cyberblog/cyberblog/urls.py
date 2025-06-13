@@ -22,7 +22,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ai_blog.urls', namespace='ai_blog')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('news/', include('news.urls', namespace='news')),
+]
 
 if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
