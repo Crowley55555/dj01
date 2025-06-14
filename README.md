@@ -25,7 +25,7 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/yourusername/ai-blog.git
+git clone https://github.com/Crowley55555/dj01.git
 cd ai-blog
 ```
 
@@ -107,4 +107,9 @@ MIT License. См. файл LICENSE для подробностей.
 ## Контакты
 
 Если у вас есть вопросы или предложения, создайте issue в репозитории проекта.
+
+
+## Разработчики
+
+- [Crowley](https://github.com/Crowley55555) Лавров Артем
 
