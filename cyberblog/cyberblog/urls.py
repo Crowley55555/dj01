@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ai_blog.urls', namespace='ai_blog')),
     path('news/', include('news.urls', namespace='news')),
+    path('captcha/', include('captcha.urls')),
 ]
 
 if settings.DEBUG:

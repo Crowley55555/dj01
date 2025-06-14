@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ai_blog.apps.AiBlogConfig',  # Наше приложение
-    'news.apps.NewsConfig'
+    'news.apps.NewsConfig',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -181,3 +182,10 @@ LOGGING = {
         },
     },
 }
+
+# Captcha settings
+CAPTCHA_LENGTH = 6
+CAPTCHA_FONT_SIZE = 30
+CAPTCHA_BACKGROUND_COLOR = '#ffffff'
+CAPTCHA_FOREGROUND_COLOR = '#001a33'
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)

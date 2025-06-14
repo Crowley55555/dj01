@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.utils.text import slugify
+from datetime import datetime
 from .models import News
 from .forms import NewsForm
 
@@ -28,16 +29,26 @@ class NewsDetailView(DetailView):
     def get_queryset(self):
         return News.objects.filter(is_published=True)
 
-class NewsCreateView(LoginRequiredMixin, CreateView):
+class NewsCreateView(CreateView):
     model = News
     form_class = NewsForm
     template_name = 'news/news_form.html'
     success_url = reverse_lazy('news:news_list')
 
     def form_valid(self, form):
-        form.instance.is_published = True
-        messages.success(self.request, 'Новость успешно создана!')
-        return super().form_valid(form)
+        news = form.save(commit=False)
+        news.author_name = form.cleaned_data['author_name']
+        news.is_published = True
+        news.moderation_status = 'approved'
+        
+        # Генерируем уникальный slug
+        base_slug = slugify(news.title)
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        news.slug = f"{base_slug}-{timestamp}"
+        
+        news.save()
+        messages.success(self.request, 'Новость успешно опубликована!')
+        return redirect('news:news_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
