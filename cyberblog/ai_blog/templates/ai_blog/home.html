@@ -4,79 +4,109 @@
 {% block title %}Главная{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row mb-4">
-        <div class="col">
-            <h1 class="mb-4">Последние новости</h1>
-            <a href="{% url 'ai_blog:article_create' %}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Написать новость
-            </a>
+<!-- Приветственная секция -->
+<section class="welcome-section py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 mb-4">Добро пожаловать в мир искусственного интеллекта</h1>
+                <p class="lead mb-4">
+                    Наш блог - это место, где вы можете узнать о последних достижениях в области искусственного интеллекта,
+                    машинного обучения и нейронных сетей. Мы собираем самые интересные новости и исследования,
+                    чтобы вы всегда были в курсе развития технологий будущего.
+                </p>
+            </div>
         </div>
     </div>
+</section>
 
-    <div class="row">
-        <div class="col-md-8">
-            {% for article in articles %}
-            <div class="card mb-4">
-                {% if article.image %}
-                <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ article.title }}</h5>
-                    <p class="card-text">{{ article.summary }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            {{ article.created_at|date:"d.m.Y H:i" }} | {{ article.author }}
-                        </small>
-                        <a href="{% url 'ai_blog:article_detail' article.slug %}" class="btn btn-primary">Читать далее</a>
+<!-- Секция авторизации -->
+<section class="auth-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="authTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Вход</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Регистрация</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3" id="authTabsContent">
+                            <div class="tab-pane fade show active" id="login" role="tabpanel">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="loginEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="loginEmail" placeholder="Введите ваш email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="loginPassword" class="form-label">Пароль</label>
+                                        <input type="password" class="form-control" id="loginPassword" placeholder="Введите пароль">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Войти</button>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="register" role="tabpanel">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="registerName" class="form-label">Имя</label>
+                                        <input type="text" class="form-control" id="registerName" placeholder="Введите ваше имя">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="registerEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="registerEmail" placeholder="Введите ваш email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="registerPassword" class="form-label">Пароль</label>
+                                        <input type="password" class="form-control" id="registerPassword" placeholder="Придумайте пароль">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            {% empty %}
-            <div class="alert alert-info">
-                Пока нет опубликованных статей.
-            </div>
-            {% endfor %}
-
-            {% if is_paginated %}
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
-                    </li>
-                    {% endif %}
-
-                    {% for num in page_obj.paginator.page_range %}
-                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                    </li>
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    Категории
-                </div>
-                <div class="list-group list-group-flush">
-                    {% for category in categories %}
-                    <a href="#" class="list-group-item list-group-item-action">
-                        {{ category.name }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Слайдер популярных новостей -->
+<section class="popular-news py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Популярные новости</h2>
+        <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for news in popular_news %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="card">
+                        {% if news.image %}
+                        <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ news.title }}</h5>
+                            <p class="card-text">{{ news.content|truncatewords:30 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">{{ news.created_at|date:"d.m.Y" }}</small>
+                                <a href="{% url 'news:news_detail' news.slug %}" class="btn btn-primary">Читать далее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Предыдущий</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Следующий</span>
+            </button>
+        </div>
+    </div>
+</section>
 {% endblock %} 

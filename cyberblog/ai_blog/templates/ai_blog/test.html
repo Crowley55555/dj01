@@ -1,0 +1,12 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Static Files</title>
+</head>
+<body>
+    <h1>Testing Static Files</h1>
+    <p>Static URL for image: {% static 'ai_blog/images/ai-bg.jpg' %}</p>
+    <img src="{% static 'ai_blog/images/ai-bg.jpg' %}" alt="Test Image" style="max-width: 300px;">
+</body>
+</html> 

@@ -8,49 +8,105 @@
     <p class="lead">Изучайте искусственный интеллект с нашими простыми и понятными материалами</p>
 </div>
 
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card bg-dark border-light h-100">
-            <img src="{% static 'ai_blog/images/ai-basics.jpg' %}" class="card-img-top" alt="Основы ИИ">
-            <div class="card-body">
-                <h3 class="card-title">Основы ИИ для начинающих</h3>
-                <p class="card-text">Узнайте, что такое искусственный интеллект, как он работает и где применяется в современном мире.</p>
-                <a href="#" class="btn btn-outline-primary">Читать</a>
+<!-- Приветственная статья -->
+<div class="card bg-dark border-light mb-5">
+    <div class="card-body">
+        <h2 class="card-title mb-4">О нашем проекте</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <p class="card-text">CyberBlog AI - это платформа для всех, кто интересуется искусственным интеллектом, машинным обучением и современными технологиями.</p>
+                <p class="card-text">Мы создаем понятные материалы для начинающих и экспертные статьи для профессионалов.</p>
+                <p class="card-text">Наш блог регулярно пополняется свежими материалами, исследованиями и практическими руководствами.</p>
             </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="card bg-dark border-light h-100">
-            <img src="{% static 'ai_blog/images/ml-vs-ai.jpg' %}" class="card-img-top" alt="ML vs AI">
-            <div class="card-body">
-                <h3 class="card-title">ML vs AI: В чем разница?</h3>
-                <p class="card-text">Разбираемся в основных понятиях: чем машинное обучение отличается от искусственного интеллекта.</p>
-                <a href="#" class="btn btn-outline-primary">Читать</a>
+            <div class="col-md-6">
+                <img src="{% static 'ai_blog/images/ai-concept.jpg' %}" class="img-fluid rounded" alt="Концепция ИИ">
             </div>
         </div>
     </div>
 </div>
 
-<div class="mt-5">
-    <h2 class="mb-4">Последние статьи</h2>
-
-    <div class="row g-4">
-        {% for article in latest_articles %}
-        <div class="col-lg-4 col-md-6">
-            <div class="card bg-dark border-light h-100">
-                <img src="{{ article.image }}" class="card-img-top" alt="{{ article.title }}">
-                <div class="card-body">
-                    <h4 class="card-title">{{ article.title }}</h4>
-                    <p class="card-text">{{ article.summary }}</p>
-                    <a href="#" class="btn btn-sm btn-outline-secondary">Читать далее</a>
-                </div>
-                <div class="card-footer text-muted">
-                    <small>{{ article.date }} | {{ article.author }}</small>
-                </div>
+<!-- Блок авторизации -->
+<div class="row mb-5 g-4">
+    <div class="col-md-6">
+        <div class="card bg-dark border-light h-100">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Вход</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control bg-dark text-light" id="loginEmail" placeholder="Ваш email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Пароль</label>
+                        <input type="password" class="form-control bg-dark text-light" id="loginPassword" placeholder="Ваш пароль">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </form>
             </div>
         </div>
-        {% endfor %}
+    </div>
+
+    <div class="col-md-6">
+        <div class="card bg-dark border-light h-100">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Регистрация</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="regUsername" class="form-label">Имя пользователя</label>
+                        <input type="text" class="form-control bg-dark text-light" id="regUsername" placeholder="Придумайте логин">
+                    </div>
+                    <div class="mb-3">
+                        <label for="regEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control bg-dark text-light" id="regEmail" placeholder="Ваш email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="regPassword" class="form-label">Пароль</label>
+                        <input type="password" class="form-control bg-dark text-light" id="regPassword" placeholder="Придумайте пароль">
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Слайдер популярных новостей -->
+<div class="mb-5">
+    <h2 class="mb-4">Популярные статьи</h2>
+    <div id="popularArticlesCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner rounded-3">
+            {% for article in popular_articles %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="card bg-dark border-light">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ article.image }}" class="img-fluid h-100 rounded-start" alt="{{ article.title }}">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ article.title }}</h3>
+                                <p class="card-text">{{ article.summary }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="#" class="btn btn-primary">Читать далее</a>
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-heart me-1"></i> {{ article.likes }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#popularArticlesCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#popularArticlesCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
 </div>
 {% endblock %}

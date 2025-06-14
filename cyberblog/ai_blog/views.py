@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -10,19 +10,21 @@ from django.contrib import messages
 import json
 from .models import Article, Category
 from .forms import ArticleForm
+from news.models import News, NewsReaction
+from django.db.models import Count, Q
 
-class HomeView(ListView):
-    model = Article
+class HomeView(TemplateView):
     template_name = 'ai_blog/home.html'
-    context_object_name = 'articles'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return Article.objects.filter(is_published=True).select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
+        
+        # Получаем популярные новости (с наибольшим количеством лайков)
+        popular_news = News.objects.filter(
+            is_published=True
+        ).order_by('-likes_count')[:5]  # Берем топ-5 новостей
+        
+        context['popular_news'] = popular_news
         return context
 
 class ArticleListView(ListView):
@@ -77,6 +79,9 @@ def data_page(request):
 
 def prompt_page(request):
     return render(request, 'ai_blog/prompt.html')
+
+def test(request):
+    return render(request, 'ai_blog/test.html')
 
 @csrf_exempt
 @require_http_methods(["POST"])
