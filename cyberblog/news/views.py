@@ -4,8 +4,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.utils.text import slugify
 from datetime import datetime
-from .models import News
-from .forms import NewsForm
+from .models import News, Comment
+from .forms import NewsForm, CommentForm
 
 # Create your views here.
 def home (request):
@@ -28,6 +28,26 @@ class NewsDetailView(DetailView):
 
     def get_queryset(self):
         return News.objects.filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        context['comments'] = self.object.comments.filter(is_published=True).order_by('created_at')
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.news = self.object
+            comment.save()
+            messages.success(request, 'Комментарий успешно добавлен!')
+            return redirect('news:news_detail', slug=self.object.slug)
+        else:
+            context = self.get_context_data()
+            context['comment_form'] = form
+            return self.render_to_response(context)
 
 class NewsCreateView(CreateView):
     model = News

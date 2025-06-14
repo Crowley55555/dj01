@@ -4,36 +4,61 @@
 
 {% block content %}
 <div class="container mt-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'news:news_list' %}">Новости</a></li>
-            <li class="breadcrumb-item active">{{ news.title }}</li>
-        </ol>
-    </nav>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <article class="card mb-4">
+                {% if news.image %}
+                <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h1 class="card-title">{{ news.title }}</h1>
+                    <p class="text-muted">
+                        <small>Автор: {{ news.author_name }} | Источник: {{ news.source }} | {{ news.created_at|date:"d.m.Y H:i" }}</small>
+                    </p>
+                    <div class="card-text">
+                        {{ news.content|linebreaks }}
+                    </div>
+                </div>
+            </article>
 
-    <article class="news-detail">
-        <h1 class="mb-4">{{ news.title }}</h1>
-        
-        <div class="news-meta text-muted mb-4">
-            <small>
-                Источник: {{ news.source }} | 
-                Опубликовано: {{ news.created_at|date:"d.m.Y H:i" }}
-            </small>
+            <!-- Комментарии -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Комментарии</h3>
+                    
+                    <!-- Форма комментария -->
+                    <form method="post" class="mb-4">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ comment_form.author_name.label_tag }}
+                            {{ comment_form.author_name }}
+                        </div>
+                        <div class="mb-3">
+                            {{ comment_form.content.label_tag }}
+                            {{ comment_form.content }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Комментировать</button>
+                    </form>
+
+                    <!-- Список комментариев -->
+                    {% if comments %}
+                        {% for comment in comments %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ comment.author_name }}</h5>
+                                <p class="card-text">{{ comment.content|linebreaks }}</p>
+                                <p class="text-muted">
+                                    <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">Пока нет комментариев. Будьте первым!</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-
-        {% if news.image %}
-        <div class="news-image mb-4">
-            <img src="{{ news.image.url }}" class="img-fluid rounded" alt="{{ news.title }}">
-        </div>
-        {% endif %}
-
-        <div class="news-content">
-            {{ news.content|linebreaks }}
-        </div>
-    </article>
-
-    <div class="mt-4">
-        <a href="{% url 'news:news_list' %}" class="btn btn-secondary">← Назад к списку новостей</a>
     </div>
 </div>
 {% endblock %} 

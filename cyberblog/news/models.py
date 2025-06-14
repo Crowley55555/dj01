@@ -38,3 +38,18 @@ class News(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+class Comment(models.Model):
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name='comments', verbose_name='Новость')
+    author_name = models.CharField(max_length=100, verbose_name='Имя автора')
+    content = models.TextField(verbose_name='Комментарий')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
+    is_published = models.BooleanField(default=True, verbose_name='Опубликовано')
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f'Комментарий от {self.author_name} к новости {self.news.title}'

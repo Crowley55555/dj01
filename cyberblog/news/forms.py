@@ -1,5 +1,5 @@
 from django import forms
-from .models import News
+from .models import News, Comment
 
 class NewsForm(forms.ModelForm):
     author_name = forms.CharField(
@@ -34,4 +34,24 @@ class NewsForm(forms.ModelForm):
             'content': 'Содержание',
             'image': 'Изображение',
             'source': 'Источник',
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['author_name', 'content']
+        widgets = {
+            'author_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите ваше имя'
+            }),
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Введите ваш комментарий'
+            })
+        }
+        labels = {
+            'author_name': 'Ваше имя',
+            'content': 'Комментарий'
         } 
