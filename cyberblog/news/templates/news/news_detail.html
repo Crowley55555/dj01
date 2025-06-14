@@ -1,8 +1,10 @@
 {% extends 'ai_blog/base.html' %}
+{% load static %}
 
 {% block title %}{{ news.title }}{% endblock %}
 
 {% block content %}
+{% csrf_token %}
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
@@ -17,6 +19,22 @@
                     </p>
                     <div class="card-text">
                         {{ news.content|linebreaks }}
+                    </div>
+                    
+                    <!-- Кнопки лайков и дизлайков -->
+                    <div class="d-flex gap-3 mt-3">
+                        <button class="btn btn-outline-primary like-btn {% if user_reaction == 'like' %}active{% endif %}" 
+                                data-news-slug="{{ news.slug }}" 
+                                data-reaction="like">
+                            <i class="bi bi-hand-thumbs-up"></i>
+                            <span class="likes-count">{{ news.likes_count }}</span>
+                        </button>
+                        <button class="btn btn-outline-danger dislike-btn {% if user_reaction == 'dislike' %}active{% endif %}" 
+                                data-news-slug="{{ news.slug }}" 
+                                data-reaction="dislike">
+                            <i class="bi bi-hand-thumbs-down"></i>
+                            <span class="dislikes-count">{{ news.dislikes_count }}</span>
+                        </button>
                     </div>
                 </div>
             </article>
@@ -61,4 +79,68 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const likeBtn = document.querySelector('.like-btn');
+    const dislikeBtn = document.querySelector('.dislike-btn');
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    function updateReactionButtons(response) {
+        // Обновляем счетчики
+        document.querySelector('.likes-count').textContent = response.likes;
+        document.querySelector('.dislikes-count').textContent = response.dislikes;
+        
+        // Обновляем состояние кнопок
+        likeBtn.classList.toggle('active', response.user_reaction === 'like');
+        dislikeBtn.classList.toggle('active', response.user_reaction === 'dislike');
+    }
+    
+    function handleReaction(button) {
+        const newsSlug = button.dataset.newsSlug;
+        const reaction = button.dataset.reaction;
+        
+        fetch(`/news/${newsSlug}/reaction/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `reaction=${reaction}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                updateReactionButtons(data);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Произошла ошибка при отправке реакции');
+        });
+    }
+    
+    likeBtn.addEventListener('click', () => handleReaction(likeBtn));
+    dislikeBtn.addEventListener('click', () => handleReaction(dislikeBtn));
+});
+</script>
+{% endblock %}
 {% endblock %} 

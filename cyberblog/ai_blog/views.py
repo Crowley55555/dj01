@@ -61,7 +61,7 @@ class ArticleCreateView(CreateView):
     model = Article
     form_class = ArticleForm
     template_name = 'ai_blog/article_form.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('ai_blog:home')
 
     def form_valid(self, form):
         messages.success(self.request, 'Статья успешно создана!')
@@ -77,9 +77,6 @@ def data_page(request):
 
 def prompt_page(request):
     return render(request, 'ai_blog/prompt.html')
-
-def test_page(request):
-    return render(request, 'ai_blog/test.html')
 
 @csrf_exempt
 @require_http_methods(["POST"])

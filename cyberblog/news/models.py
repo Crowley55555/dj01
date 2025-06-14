@@ -25,6 +25,8 @@ class News(models.Model):
         verbose_name='Статус модерации'
     )
     moderation_comment = models.TextField(blank=True, null=True, verbose_name='Комментарий модератора')
+    likes_count = models.PositiveIntegerField(default=0, verbose_name='Количество лайков')
+    dislikes_count = models.PositiveIntegerField(default=0, verbose_name='Количество дизлайков')
 
     class Meta:
         verbose_name = 'Новость'
@@ -53,3 +55,22 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Комментарий от {self.author_name} к новости {self.news.title}'
+
+class NewsReaction(models.Model):
+    REACTION_CHOICES = (
+        ('like', 'Лайк'),
+        ('dislike', 'Дизлайк'),
+    )
+
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name='reactions', verbose_name='Новость')
+    ip_address = models.GenericIPAddressField(verbose_name='IP адрес')
+    reaction = models.CharField(max_length=7, choices=REACTION_CHOICES, verbose_name='Реакция')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата реакции')
+
+    class Meta:
+        verbose_name = 'Реакция на новость'
+        verbose_name_plural = 'Реакции на новости'
+        unique_together = ['news', 'ip_address']  # Один IP может поставить только одну реакцию на новость
+
+    def __str__(self):
+        return f'{self.get_reaction_display()} от {self.ip_address} к новости {self.news.title}'

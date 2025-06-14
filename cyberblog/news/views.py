@@ -3,8 +3,12 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.utils.text import slugify
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
-from .models import News, Comment
+from .models import News, Comment, NewsReaction
 from .forms import NewsForm, CommentForm
 
 # Create your views here.
@@ -33,6 +37,17 @@ class NewsDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         context['comments'] = self.object.comments.filter(is_published=True).order_by('created_at')
+        
+        # Получаем реакцию пользователя, если она есть
+        if self.request.user.is_authenticated:
+            try:
+                user_reaction = self.object.reactions.get(ip_address=self.request.META.get('REMOTE_ADDR'))
+                context['user_reaction'] = user_reaction.reaction
+            except NewsReaction.DoesNotExist:
+                context['user_reaction'] = None
+        else:
+            context['user_reaction'] = None
+            
         return context
 
     def post(self, request, *args, **kwargs):
@@ -75,3 +90,56 @@ class NewsCreateView(CreateView):
         context['title'] = 'Создать новость'
         context['button_text'] = 'Опубликовать'
         return context
+
+@csrf_exempt
+@require_POST
+def news_reaction(request, slug):
+    news = get_object_or_404(News, slug=slug, is_published=True)
+    reaction_type = request.POST.get('reaction')
+    ip_address = request.META.get('REMOTE_ADDR')
+
+    if reaction_type not in ['like', 'dislike']:
+        return JsonResponse({'error': 'Неверный тип реакции'}, status=400)
+
+    try:
+        # Пытаемся получить существующую реакцию
+        user_reaction = news.reactions.get(ip_address=ip_address)
+        
+        if user_reaction.reaction == reaction_type:
+            # Если реакция такая же, удаляем её
+            user_reaction.delete()
+            if reaction_type == 'like':
+                news.likes_count = max(0, news.likes_count - 1)
+            else:
+                news.dislikes_count = max(0, news.dislikes_count - 1)
+        else:
+            # Если реакция другая, меняем её
+            old_reaction = user_reaction.reaction
+            user_reaction.reaction = reaction_type
+            user_reaction.save()
+            
+            if old_reaction == 'like':
+                news.likes_count = max(0, news.likes_count - 1)
+                news.dislikes_count += 1
+            else:
+                news.dislikes_count = max(0, news.dislikes_count - 1)
+                news.likes_count += 1
+    except NewsReaction.DoesNotExist:
+        # Создаем новую реакцию
+        NewsReaction.objects.create(
+            news=news,
+            ip_address=ip_address,
+            reaction=reaction_type
+        )
+        if reaction_type == 'like':
+            news.likes_count += 1
+        else:
+            news.dislikes_count += 1
+
+    news.save()
+    
+    return JsonResponse({
+        'likes': news.likes_count,
+        'dislikes': news.dislikes_count,
+        'user_reaction': reaction_type
+    })
