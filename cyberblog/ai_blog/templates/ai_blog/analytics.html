@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Аналитика{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Аналитика</h1>
+    
+    <div class="row">
+        <!-- Статистика новостей -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Статистика новостей</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Всего новостей
+                            <span class="badge bg-primary rounded-pill">{{ news_stats.total }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Опубликовано
+                            <span class="badge bg-success rounded-pill">{{ news_stats.published }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            На модерации
+                            <span class="badge bg-warning rounded-pill">{{ news_stats.pending }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            За последние 30 дней
+                            <span class="badge bg-info rounded-pill">{{ news_stats.recent }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Статистика реакций -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Статистика реакций</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Всего лайков
+                            <span class="badge bg-success rounded-pill">{{ reaction_stats.total_likes }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Всего дизлайков
+                            <span class="badge bg-danger rounded-pill">{{ reaction_stats.total_dislikes }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Лайков за 30 дней
+                            <span class="badge bg-success rounded-pill">{{ reaction_stats.recent_likes }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Дизлайков за 30 дней
+                            <span class="badge bg-danger rounded-pill">{{ reaction_stats.recent_dislikes }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

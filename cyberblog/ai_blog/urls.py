@@ -10,9 +10,9 @@ app_name = 'ai_blog'
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
-    path('article/<slug:slug>/', views.ArticleDetailView.as_view(), name='article_detail'),
-    path('article/create/', views.ArticleCreateView.as_view(), name='article_create'),
-    path('data/', views.data_page, name='data'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
     path('prompt/', views.prompt_page, name='prompt'),
     path('test/', views.test, name='test'),
+    path('data/', views.data_page, name='data'),
 ]

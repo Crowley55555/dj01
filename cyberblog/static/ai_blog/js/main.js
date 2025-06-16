@@ -1,6 +1,6 @@
 /**
  * Main JavaScript file for CyberBlog AI
- * Contains basic interactivity and analytics
+ * Contains basic interactivity
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -17,16 +17,4 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.transform = '';
         });
     });
-
-    // Simple analytics - track page visits
-    if (typeof navigator.sendBeacon === 'function') {
-        const page = window.location.pathname;
-        const data = new FormData();
-        data.append('page', page);
-        data.append('time', new Date().toISOString());
-
-        // Используем абсолютный путь
-        const analyticsUrl = window.location.origin + '/analytics/';
-        navigator.sendBeacon(analyticsUrl, data);
-    }
 });

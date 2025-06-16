@@ -12,19 +12,15 @@ from .models import Article, Category
 from .forms import ArticleForm
 from news.models import News, NewsReaction
 from django.db.models import Count, Q
+from django.contrib.auth.decorators import login_required
+from datetime import timedelta
 
 class HomeView(TemplateView):
     template_name = 'ai_blog/home.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Получаем популярные новости (с наибольшим количеством лайков)
-        popular_news = News.objects.filter(
-            is_published=True
-        ).order_by('-likes_count')[:5]  # Берем топ-5 новостей
-        
-        context['popular_news'] = popular_news
+        context['latest_news'] = News.objects.filter(is_published=True).order_by('-created_at')[:5]
         return context
 
 class ArticleListView(ListView):
@@ -77,24 +73,14 @@ class ArticleCreateView(CreateView):
 def data_page(request):
     return render(request, 'ai_blog/data.html')
 
+def about(request):
+    return render(request, 'ai_blog/about.html')
+
+def contact(request):
+    return render(request, 'ai_blog/contact.html')
+
 def prompt_page(request):
     return render(request, 'ai_blog/prompt.html')
 
 def test(request):
     return render(request, 'ai_blog/test.html')
-
-@csrf_exempt
-@require_http_methods(["POST"])
-def analytics(request):
-    try:
-        page = request.POST.get('page', '')
-        time = request.POST.get('time', '')
-        
-        # Здесь можно добавить логику сохранения аналитики
-        # Например, в базу данных или файл логов
-        print(f"Analytics: Page={page}, Time={time}")
-        
-        return HttpResponse(status=200)
-    except Exception as e:
-        print(f"Analytics error: {str(e)}")
-        return HttpResponse(status=500)
