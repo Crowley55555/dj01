@@ -1,0 +1,53 @@
+{% extends "ai_blog/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card animate__animated animate__fadeIn">
+                <div class="card-header">
+                    <h3 class="mb-0 text-center">Профиль пользователя</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="avatar-container animate__animated animate__pulse animate__infinite animate__slower">
+                                <i class="fas fa-user-circle fa-6x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="profile-info">
+                                <div class="mb-3 animate__animated animate__fadeInLeft">
+                                    <h5 class="text-primary">Имя пользователя</h5>
+                                    <p class="lead">{{ user.username }}</p>
+                                </div>
+                                <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.2s">
+                                    <h5 class="text-primary">Email</h5>
+                                    <p class="lead">{{ user.email }}</p>
+                                </div>
+                                <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.4s">
+                                    <h5 class="text-primary">Телефон</h5>
+                                    <p class="lead">{{ user.phone_number|default:"Не указан" }}</p>
+                                </div>
+                                <div class="mb-3 animate__animated animate__fadeInLeft" style="animation-delay: 0.6s">
+                                    <h5 class="text-primary">О себе</h5>
+                                    <p class="lead">{{ user.bio|default:"Не указано" }}</p>
+                                </div>
+                                <div class="mt-4 animate__animated animate__fadeInUp">
+                                    <a href="{% url 'accounts:profile_edit' %}" class="btn btn-primary">
+                                        <i class="fas fa-edit me-2"></i>Редактировать профиль
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

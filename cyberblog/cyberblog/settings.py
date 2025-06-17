@@ -44,7 +44,12 @@ INSTALLED_APPS = [
     'ai_blog.apps.AiBlogConfig',  # Наше приложение
     'news.apps.NewsConfig',
     'captcha',
+    'accounts.apps.AccountsConfig',  # Приложение для аутентификации
+    'widget_tweaks',  # Для улучшения форм
 ]
+
+# Настройка пользовательской модели
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,7 +88,7 @@ WSGI_APPLICATION = 'cyberblog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 

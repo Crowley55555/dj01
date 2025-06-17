@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('ai_blog.urls', namespace='ai_blog')),
     path('news/', include('news.urls', namespace='news')),
     path('captcha/', include('captcha.urls')),
+    path('accounts/', include('accounts.urls')),
 ]
 
 if settings.DEBUG:

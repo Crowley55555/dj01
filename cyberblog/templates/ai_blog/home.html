@@ -26,49 +26,29 @@
 </div>
 
 <!-- Блок авторизации -->
+{% if not user.is_authenticated %}
 <div class="row mb-5 g-4">
     <div class="col-md-6">
         <div class="card bg-dark border-light h-100">
-            <div class="card-body">
-                <h3 class="card-title mb-4">Вход</h3>
-                <form>
-                    <div class="mb-3">
-                        <label for="loginEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control bg-dark text-light" id="loginEmail" placeholder="Ваш email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="loginPassword" class="form-label">Пароль</label>
-                        <input type="password" class="form-control bg-dark text-light" id="loginPassword" placeholder="Ваш пароль">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Войти</button>
-                </form>
+            <div class="card-body text-center">
+                <h3 class="card-title mb-4">Вход в систему</h3>
+                <p class="card-text mb-4">Уже есть аккаунт? Войдите в систему, чтобы получить доступ ко всем возможностям.</p>
+                <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-lg">Войти</a>
             </div>
         </div>
     </div>
 
     <div class="col-md-6">
         <div class="card bg-dark border-light h-100">
-            <div class="card-body">
+            <div class="card-body text-center">
                 <h3 class="card-title mb-4">Регистрация</h3>
-                <form>
-                    <div class="mb-3">
-                        <label for="regUsername" class="form-label">Имя пользователя</label>
-                        <input type="text" class="form-control bg-dark text-light" id="regUsername" placeholder="Придумайте логин">
-                    </div>
-                    <div class="mb-3">
-                        <label for="regEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control bg-dark text-light" id="regEmail" placeholder="Ваш email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="regPassword" class="form-label">Пароль</label>
-                        <input type="password" class="form-control bg-dark text-light" id="regPassword" placeholder="Придумайте пароль">
-                    </div>
-                    <button type="submit" class="btn btn-outline-primary">Зарегистрироваться</button>
-                </form>
+                <p class="card-text mb-4">Создайте новый аккаунт, чтобы начать использовать все функции платформы.</p>
+                <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg">Зарегистрироваться</a>
             </div>
         </div>
     </div>
 </div>
+{% endif %}
 
 <!-- Слайдер популярных новостей -->
 <div class="mb-5">
