@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 from .models import News, Comment, NewsReaction
 from .forms import NewsForm, CommentForm
@@ -64,11 +65,12 @@ class NewsDetailView(DetailView):
             context['comment_form'] = form
             return self.render_to_response(context)
 
-class NewsCreateView(CreateView):
+class NewsCreateView(LoginRequiredMixin, CreateView):
     model = News
     form_class = NewsForm
     template_name = 'news/news_form.html'
     success_url = reverse_lazy('news:news_list')
+    login_url = reverse_lazy('login')  # URL для перенаправления неавторизованных пользователей
 
     def form_valid(self, form):
         news = form.save(commit=False)
